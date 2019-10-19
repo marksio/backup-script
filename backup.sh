@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Declare variable
 logfileName="logfile_backup.txt"
 dirBackupConfigFile="backup_config_file"
 
@@ -57,6 +58,10 @@ function yConfig() {
     while :
     do
         read -p "Enter the your default config setting file name (Without .txt): " exist_config_file_name
+        if [ "$?" != "0" ]; then
+            printf "\n[Error]!!!\n\n" 1>&2
+            exit
+        fi
         if [ ! -f "${exist_config_file_name}.txt" ]; then
             echo "
             '${exist_config_file_name}.txt' file not found.
@@ -65,10 +70,6 @@ function yConfig() {
             ls
         else 
             break
-        fi
-        if [ "$?" != "0" ]; then
-            printf "\n[Error]!!!\n\n" 1>&2
-            exit 1
         fi
     done
     echo "'$exist_config_file_name.txt' file found."

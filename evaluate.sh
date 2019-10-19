@@ -1,10 +1,11 @@
 #!/bin/bash
 
-# Define variable
+# Declare variable
 DIR="testing_backup"
 backupFilename="backup.sh"
 evaluationLogFilename="logfile_evaluate.txt"
 config_file_name="testing"
+exist_config_file_name="testing"
 source="../Documents"
 dest="testing_backup/testing_noErrorPredefine"
 
@@ -96,7 +97,7 @@ function predefineCase() {
     do
         echo "
         '1' - Predefine setting without error, no config file existed on the destination (Creation of backup file)
-        '2' - MUST RUN #1 first ~ Predefine setting without error, existed config file on the destination (2 Times)
+        '2' - MUST RUN #1 first ~ Predefine setting without error, existed config file on the destination (Automatically run for 2 Times)
         '3' - Error issue, wrong input when prompt user on session or program continuity
         '4' - Error issue, file existed but still create backup on the same destination
         '5' - Error issue, invalid input when prompt yes or no on do you have a default config file
@@ -145,7 +146,7 @@ function predefineCase() {
 function nPredefineNoError() {
     yn="n"
     session="n"
-    echo -e "$dir_backup_config_file\n$yn\n$config_file_name\n$source\n$dest\n$session" | bash ./$backupFilename
+    echo -e "$yn\n$config_file_name\n$source\n$dest\n$session" | bash ./$backupFilename
     echo ""
     echo "All your evaluated backup file included logfile is allocated at '${DIR}' except for the config file."
     echo "Your evaluated folder name is '$(basename $dest)' which is destination is inside '${DIR}'"
@@ -155,7 +156,7 @@ function nPredefineNoError() {
     echo ""
 }
 
-# '2' - MUST RUN #1 first ~ Predefine setting without error, existed config file on the destination (Creation of backup file)
+# '2' - MUST RUN #1 first ~ Predefine setting without error, existed config file on the destination (2 Times)
 function yPredefineNoError() {
     yn="y"
     session="n"
