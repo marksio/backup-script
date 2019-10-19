@@ -150,11 +150,66 @@ function backupFile() {
     if [ $? -eq 0 ]; then
         printf "Backup total of '$(countSourceFile)' file(s) from '${source}' to '${dest}' Successfully.\n"
         printf "$(datetime) - Backup total of '$(countSourceFile)' file(s) from '${source}' to '${dest}' Successfully.\n" >> $logfileName
+        printf "~~~ Summary of Number of File(s) or Folder(s) Backed Up ~~~\n$(countFile)\n\n" >> $logfileName
     else
         echo "There is [ERROR] backing up files from '${source}' to '${dest}'. Check you destination path.
         "
         echo $(datetime) - "There is [ERROR] backing up files from '${source}' to '${dest}'. Check you destination path." >> $logfileName
     fi
+}
+
+function countFile() {
+    printf "Total number of file(s) in Source directory '${source}'\n"
+    countSourceFile
+    printf "\nTotal number of file(s) in Destination in '$(getLatestDestFolder)' under the directory of '${dest}'\n"
+    countDestFile
+    printf "\nTotal number of file(s) in each Destination folder under the directory of '${dest}'\n"
+    countDestFileOnDir
+    printf "You have perform $(countDir) evaluation and there is total of $(countDir) folder(s) in the directory of ''${dest}''\n"
+    if [ $(countSourceFile) = $(countDestFile) ]; then
+        printf "\nTotal number of file(s) matched which is $(countSourceFile)\n"
+    fi
+    echo ""
+}
+
+# Count number of file in source directory
+function countSourceFile() {
+    find $source -type f | wc -l
+}
+
+# Count number of file in destination
+function countDestFile() {
+    vargetLatestDestFolder=$(getLatestDestFolder)
+    cd $dest/$vargetLatestDestFolder
+    find $getLatestDestFolder -type f | wc -l
+    cd ../../../
+}
+
+# Count number of file inside each folder of testing_backup
+function countDestFileOnDir() {
+    for entry in "$dest"/*
+    do
+        echo $(basename $entry)
+        find $entry -type f | wc -l
+        echo ""
+    done
+}
+
+# Get the folder name of the most recent created
+function getLatestDestFolder() {
+    varGetLatestDestFolder=$(ls -dt1 "$dest"/*/ | head -n1)
+    echo $(basename $varGetLatestDestFolder)
+}
+
+# Count number of folder in the testing_backup folder
+function countDir() {
+    cd $dest 
+    ls -A | wc -l
+    cd ../../
+}
+
+function searchFile() {
+    find . -name $dest*
 }
 
 # Prompt user on session or program continuity
@@ -179,11 +234,6 @@ function sessionBackup() {
             ;;
         esac
     done
-}
-
-# Count number of file in source directory
-function countSourceFile() {
-    find $source -type f | wc -l
 }
 
 # Execution of program
