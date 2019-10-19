@@ -2,7 +2,7 @@
 
 # Define variable
 DIR="testing_backup"
-backupFilename="backup_15073448.sh"
+backupFilename="backup.sh"
 evaluationLogFilename="logfile_evaluate.txt"
 config_file_name="testing"
 source="../Documents"
