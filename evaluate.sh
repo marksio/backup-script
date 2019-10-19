@@ -96,7 +96,7 @@ function predefineCase() {
     do
         echo "
         '1' - Predefine setting without error, no config file existed on the destination (Creation of backup file)
-        '2' - MUST RUN #1 first ~ Predefine setting without error, existed config file on the destination (Creation of backup file)
+        '2' - MUST RUN #1 first ~ Predefine setting without error, existed config file on the destination (2 Times)
         '3' - Error issue, wrong input when prompt user on session or program continuity
         '4' - Error issue, file existed but still create backup on the same destination
         '5' - Error issue, invalid input when prompt yes or no on do you have a default config file
@@ -159,6 +159,7 @@ function nPredefineNoError() {
 function yPredefineNoError() {
     yn="y"
     session="n"
+    echo -e "$yn\n$exist_config_file_name\n$session" | bash ./$backupFilename
     echo -e "$yn\n$exist_config_file_name\n$session" | bash ./$backupFilename
     echo ""
     echo "All your evaluated backup file included logfile is allocated at '${DIR}' except for the config file."
