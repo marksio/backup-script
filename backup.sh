@@ -4,6 +4,10 @@
 logfileName="logfile_backup.txt"
 dirBackupConfigFile="backup_config_file"
 
+function datetime() {
+    echo `date +"%d-%m-%Y_%H:%M:%S:%N"`
+}
+
 # Only main function will be call first then only other function will be called. Main function is like the boss, allocate tasks to others
 function main() {
     welcome
@@ -175,10 +179,6 @@ function sessionBackup() {
             ;;
         esac
     done
-}
-
-function datetime() {
-    echo `date +"%d-%m-%Y_%H:%M:%S:%N"`
 }
 
 # Count number of file in source directory
