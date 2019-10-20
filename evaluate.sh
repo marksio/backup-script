@@ -188,7 +188,7 @@ function nPredefineNoError() {
 }
 
 # '2' - MUST RUN #1 first ~ Predefine setting without error, existed config file on the destination (2 Times)
-# It will create 2 folder with same file(s) inside 2 different folder
+# It will create 2 folders with the same file(s) inside 2 different folder
 function yPredefineNoError() {
     yn="y"
     session="n"
@@ -205,7 +205,7 @@ function yPredefineNoError() {
 
 # '3' - Error issue, wrong input when prompt user on session continuity
 # Depending on any file(s) or folder(s) existent
-# If file(s) or folder(s) existed, then it will create a folder name called "asdfad" outside the "testing_backup folder"
+# If file(s) or folder(s) existed, then it will create a folder called "asdfad" outside the "testing_backup folder"
 # If file(s) or folder(s) not exist, then it will backed up successfully but it prompt error
 function nPredefineError() {
     yn="n"
