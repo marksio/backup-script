@@ -48,7 +48,7 @@ function configFileSetting() {
                 nConfig
                 break
             else
-                echo "You have entered wrong character !!"
+                printf "\nYou have entered wrong character !!\n\n"
             fi  
         fi
     done
@@ -58,7 +58,7 @@ function configFileSetting() {
 # When user have a configuration file
 function yConfig() {
     cd $dirBackupConfigFile    
-    echo "List of file(s) on the current directory is/are" 
+    printf "\nList of file(s) on the current directory is/are\n" 
     ls
     while :
     do
@@ -68,17 +68,15 @@ function yConfig() {
             exit 1
         else
             if [ ! -f "${exist_config_file_name}.txt" ]; then
-                echo "
-                '${exist_config_file_name}.txt' file not found.
-                "
-                echo "List of file(s) on the current directory is/are" 
+                printf "\n'${exist_config_file_name}.txt' configuration file not found."
+                printf "\n\nList of file(s) on the current directory is/are\n" 
                 ls
             else 
                 break
             fi
         fi
     done
-    echo "'$exist_config_file_name.txt' file found."
+    printf "'$exist_config_file_name.txt' configuration file found.\n\n"
     while read s d; do
         source=$s dest=$d
     done < $exist_config_file_name.txt
@@ -88,13 +86,9 @@ function yConfig() {
 # When user do not have a configuration file
 function nConfig() {
     if [ -d "$dirBackupConfigFile" ]; then
-        echo "
-        '${dirBackupConfigFile}' folder existed
-        "
+        printf "\n'${dirBackupConfigFile}' folder existed\n"
     fi
-    echo "
-    Your default configuration file will be store at '${dirBackupConfigFile}' folder on the same directory of this script
-    "
+    printf "Your default configuration file will be store at '${dirBackupConfigFile}' folder on the same directory of this script\n\n"
     while :
     do
         read -p "Enter file name for default config (No file extention needed, It will Automatically define as .txt): " config_file_name
@@ -112,15 +106,17 @@ function nConfig() {
         fi
     done  
     promptUserBackupSourceDest # Call this function to prompt user on the source and destination 
-    mkdir $dirBackupConfigFile
-    echo "Created '${dirBackupConfigFile}' folder on the same directory of this script"
+    if [ ! -d $dirBackupConfigFile ]; then
+        mkdir $dirBackupConfigFile
+    fi
+    printf "\nCreated '${dirBackupConfigFile}' folder on the same directory of this script\n"
     echo "$source $dest" >> "$dirBackupConfigFile/$config_file_name.txt"
     if [ $? -eq 0 ]; then
-        echo "Created config file '${config_file_name}.txt' Successfully at '${dirBackupConfigFile}' folder."
-        echo $(datetime) - "Created config file '${config_file_name}.txt' Successfully at '${dirBackupConfigFile}' folder." >> $logfileName
+        printf "Created config file '${config_file_name}.txt' Successfully at '${dirBackupConfigFile}' folder.\n"
+        printf "$(datetime) - Created config file '${config_file_name}.txt' Successfully at '${dirBackupConfigFile}' folder.\n\n" >> $logfileName
     else
-        echo "There is error creating config file '${config_file_name}.txt'."
-        echo $(datetime) - "There is error creating config file '${config_file_name}.txt'." >> $logfileName
+        printf "There is error creating config file '${config_file_name}.txt'.\n\n"
+        printf "$(datetime) - There is error creating config file '${config_file_name}.txt'.\n\n" >> $logfileName
     fi
 }
 
@@ -128,7 +124,7 @@ function nConfig() {
 function promptUserBackupSourceDest() {
     while :
     do
-        echo "Your current working directory is" 
+        printf "\nYour current working directory is " 
         pwd
         read -p "Enter the FULL location path of the file you wish to backup (From / Source): " source
         if [ "$?" != "0" ]; then
@@ -136,13 +132,13 @@ function promptUserBackupSourceDest() {
             exit 1
         else
             if [ ! -d "$source" ]; then
-                echo "Directory does not exist!" 
+                printf "\nDirectory does not exist!\n" 
             else 
                 break
             fi
         fi
     done
-    echo "Your current working directory is" 
+    printf "\nYour current working directory is " 
     pwd
     while :
     do
@@ -166,8 +162,8 @@ function backupFile() {
     destTimestamp=$(basename $source)"_"$(datetime)
     cp -r $source"/." $dest/$destTimestamp
     if [ $? -eq 0 ]; then
-        printf "Backup total of '$(countSourceFile)' file(s) from '${source}' to '${dest}' Successfully.\n"
-        printf "$(datetime) - Backup total of '$(countSourceFile)' file(s) from '${source}' to '${dest}' Successfully.\n" >> $logfileName
+        printf "Backup total of '$(countSourceFile)' file(s) from '${source}' to '${dest}' Successfully.\n\n"
+        printf "$(datetime) - Backup total of '$(countSourceFile)' file(s) from '${source}' to '${dest}' Successfully.\n\n" >> $logfileName
         printf "~~~ Summary of Number of File(s) or Folder(s) Backed Up ~~~\n$(countFile)\n\n" >> $logfileName
         if [ ! -f "$logfileNameForEvaluate" ]; then
             let counter=1
@@ -180,9 +176,8 @@ function backupFile() {
             printf "$counter $(datetime) ${source} ${dest} ${destTimestamp} \n" >> $logfileNameForEvaluate
         fi        
     else
-        echo "There is [ERROR] backing up files from '${source}' to '${dest}'. Check you destination path.
-        "
-        echo $(datetime) - "There is [ERROR] backing up files from '${source}' to '${dest}'. Check you destination path." >> $logfileName
+        printf "\nThere is [ERROR] backing up files from '${source}' to '${dest}'. Check you destination path.\n\n"
+        printf "$(datetime) - There is [ERROR] backing up files from '${source}' to '${dest}'. Check you destination path.\n\n" >> $logfileName
     fi
 }
 
@@ -254,7 +249,7 @@ function sessionBackup() {
                 printf "\n~~~ Thank You using me ~~~\n\n"
                 exit
             else
-                echo "Please enter the valid value !!"
+                printf "\nPlease enter the valid value !!\n\n"
             fi
         fi
     done
