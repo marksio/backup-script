@@ -25,7 +25,7 @@ function welcome() {
 function configFileSetting() {
     while :
     do
-        read -p "Do you have default config setting ('y' for Yes, 'n' for No): " yn
+        read -p "Do you want to use OR have a default config setting ('y' for Yes, 'n' for No): " yn
         if [ "$?" != "0" ]; then
             printf "\n[Error]!!!\n\n" 1>&2
             break
