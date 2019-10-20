@@ -316,7 +316,7 @@ function viewLog() {
     while :
     do
         if [ ! -f "$DIR/$evaluationLogFilename" ]; then
-            echo "\nThere is no $evaluationLogFilename file exist.\nPlease run the Pre-Configuration Test or Manual Test first.\n\n"
+            printf "\nThere is no $evaluationLogFilename file exist.\nPlease run the Pre-Configuration Test or Manual Test first.\n\n"
             main
         fi
         read -p "Do you have Visual Studio Code ('y' for Yes // 'n' for No):" programA
