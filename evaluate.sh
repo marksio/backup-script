@@ -22,14 +22,19 @@ function main() {
         initialSetup
         menu
         read -p "Do you want to continue ('y' for Yes // 'n' for No) : " sessionyn
-        if [ $sessionyn = 'n' ]; then
-            end
-            thanks
-            break
-        elif [ $sessionyn = 'y' ]; then
-            echo ""
-        else 
-            printf "Wrong input. Please enter the correct value\n"
+        if [ "$?" != "0" ]; then
+            printf "\n[Error]!!!\n\n" 1>&2
+            exit 1
+        else
+            if [ $sessionyn = 'n' ]; then
+                end
+                thanks
+                break
+            elif [ $sessionyn = 'y' ]; then
+                echo ""
+            else 
+                printf "Wrong input. Please enter the correct value\n"
+            fi
         fi
     done
 }
@@ -59,45 +64,50 @@ function menu() {
         '6' - Delete Old // Previous '${DIR}' Folder & config file '$config_file.txt' produced by this script
         "
         read -p "What scenario number you would like to test (From above):" menu
-        case $menu in
-        "1")
-            predefineCase
-            break
-            ;;
-        "2" )
-            printf "\n\n\n\n\nThis backup script is executed though evaluate script\nSo remember for your backup destination will be at '${DIR}' 
-            and your config file name will be '${config_file_name}'\n\n"
-            ./$backupFilename
-            break
-            ;;
-        "3" )
-            testBackupEvaluateLogfile
-            break
-            ;;
-        "4" )
-            countFile
-            break
-            ;;
-        "5" )
-            viewLog
-            break
-            ;;
-        "6" )
-            rm -rf $DIR
-            rm -rf asdfad
-            if [ -f "$config_file_name.txt" ]; then
-                rm backup_config_file/$config_file_name.txt
-            fi
-            echo "
-            Folder '${DIR}' Deleted
-            "
-            thanks
-            break
-            ;;
-        *)
-            printf "Wrong input. Please enter the correct value.\n"
-            ;;
-        esac
+        if [ "$?" != "0" ]; then
+            printf "\n[Error]!!!\n\n" 1>&2
+            exit 1
+        else
+            case $menu in
+            "1")
+                predefineCase
+                break
+                ;;
+            "2" )
+                printf "\n\n\n\n\nThis backup script is executed though evaluate script\nSo remember for your backup destination will be at '${DIR}' 
+                and your config file name will be '${config_file_name}'\n\n"
+                ./$backupFilename
+                break
+                ;;
+            "3" )
+                testBackupEvaluateLogfile
+                break
+                ;;
+            "4" )
+                countFile
+                break
+                ;;
+            "5" )
+                viewLog
+                break
+                ;;
+            "6" )
+                rm -rf $DIR
+                rm -rf asdfad
+                if [ -f "$config_file_name.txt" ]; then
+                    rm backup_config_file/$config_file_name.txt
+                fi
+                echo "
+                Folder '${DIR}' Deleted
+                "
+                thanks
+                break
+                ;;
+            *)
+                printf "Wrong input. Please enter the correct value.\n"
+                ;;
+            esac
+        fi
     done
     createLog
 }
@@ -113,42 +123,52 @@ function predefineCase() {
         '5' - Error issue, invalid input when prompt yes or no on do you have a default config file
         "
         read -p "What scenario number you would like to test (From above):" test
-        case $test in
-        "1")
-            nPredefineNoError
-            break
-            ;;
-        "2" )
-            yPredefineNoError
-            break
-            ;;
-        "3" )
-            nPredefineError
-            break
-            ;;
-        "4" )
-            yPredefineError
-            break
-            ;;
-        "5" )
-            invalid
-            break
-            ;;
-        *)
-            printf "Wrong input. Please enter the correct value.\n"
-            ;;
-        esac
+        if [ "$?" != "0" ]; then
+            printf "\n[Error]!!!\n\n" 1>&2
+            exit 1
+        else
+            case $test in
+            "1")
+                nPredefineNoError
+                break
+                ;;
+            "2" )
+                yPredefineNoError
+                break
+                ;;
+            "3" )
+                nPredefineError
+                break
+                ;;
+            "4" )
+                yPredefineError
+                break
+                ;;
+            "5" )
+                invalid
+                break
+                ;;
+            *)
+                printf "Wrong input. Please enter the correct value.\n"
+                ;;
+            esac
+        fi
     done
     while :
     do
         read -p "Do you want to view the log or summary ('y' for Yes // 'n' for No) : " viewLogyn
-        if [ $viewLogyn = 'y' ]; then
-            printLog
-            break
-        elif [ $viewLogyn = 'n' ]; then
-            break
+        if [ "$?" != "0" ]; then
+            printf "\n[Error]!!!\n\n" 1>&2
+            exit 1
         else
-            printf "Wrong input. Please enter the correct value.\n"
+            if [ $viewLogyn = 'y' ]; then
+                printLog
+                break
+            elif [ $viewLogyn = 'n' ]; then
+                break
+            else
+                printf "Wrong input. Please enter the correct value.\n"
+            fi
         fi
     done
 }
@@ -296,26 +316,28 @@ function viewLog() {
     while :
     do
         if [ ! -f "$DIR/$evaluationLogFilename" ]; then
-            echo "
-            There is no $evaluationLogFilename file exist.
-            Please run the Pre-Configuration Test or Manual Test first.
-            "
+            echo "\nThere is no $evaluationLogFilename file exist.\nPlease run the Pre-Configuration Test or Manual Test first.\n\n"
             main
         fi
         read -p "Do you have Visual Studio Code ('y' for Yes // 'n' for No):" programA
-        case $programA in
-        "n")
-            cat $DIR/$evaluationLogFilename
-            break
-            ;;
-        "y" )
-            code $DIR/$evaluationLogFilename
-            break
-            ;;
-        *)
-            printf "Wrong input. Please enter the correct value.\n"
-            ;;
-        esac
+        if [ "$?" != "0" ]; then
+            printf "\n[Error]!!!\n\n" 1>&2
+            exit 1
+        else
+            case $programA in
+            "n")
+                cat $DIR/$evaluationLogFilename
+                break
+                ;;
+            "y" )
+                code $DIR/$evaluationLogFilename
+                break
+                ;;
+            *)
+                printf "Wrong input. Please enter the correct value.\n"
+                ;;
+            esac
+        fi
     done 
 }
 
@@ -377,20 +399,25 @@ function end() {
     while :
     do
         read -p "Do you want to delete this '${DIR}' directory ('y' for Yes // 'n' for No) : " delDir
-        if [ $delDir = "y" ]; then
-            rm -rf $DIR
-            rm -rf asdfad
-            if [ -f "$config_file_name.txt" ]; then
-                rm backup_config_file/$config_file_name.txt
-            fi
-            echo "
-            Folder '${DIR}' Deleted
-            "
-            break
-        elif [ $delDir = 'n' ]; then
-            break
+        if [ "$?" != "0" ]; then
+            printf "\n[Error]!!!\n\n" 1>&2
+            exit 1
         else
-            printf "Wrong input. Please enter the correct value.\n" 
+            if [ $delDir = "y" ]; then
+                rm -rf $DIR
+                rm -rf asdfad
+                if [ -f "$config_file_name.txt" ]; then
+                    rm backup_config_file/$config_file_name.txt
+                fi
+                echo "
+                Folder '${DIR}' Deleted
+                "
+                break
+            elif [ $delDir = 'n' ]; then
+                break
+            else
+                printf "Wrong input. Please enter the correct value.\n" 
+            fi
         fi
     done    
 }
