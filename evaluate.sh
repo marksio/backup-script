@@ -223,6 +223,8 @@ function countFileFortestBackupEvaluateLogfile() {
     fi
     printf "In total you have perform $counter of backup\n"
     echo ""
+    printf "===================================================================================================\n"
+    printf "===================================================================================================\n\n"
 }
 
 # Count number of file in source directory
@@ -321,6 +323,8 @@ function countFile() {
         printf "\nTotal number of file(s) matched which is $(countSourceFile) with the source and destination\n"
     fi
     echo ""
+    printf "===================================================================================================\n"
+    printf "===================================================================================================\n\n"
 }
 
 # Count number of file in source directory

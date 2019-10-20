@@ -31,7 +31,7 @@ function configFileSetting() {
         read -p "Do you want to use OR have a default config setting ('y' for Yes, 'n' for No): " yn
         if [ "$?" != "0" ]; then
             printf "\n[Error]!!!\n\n" 1>&2
-            break
+            exit 1
         fi
         case $yn in
         "y")
@@ -68,7 +68,7 @@ function yConfig() {
         read -p "Enter the your default config setting file name (Without .txt): " exist_config_file_name
         if [ "$?" != "0" ]; then
             printf "\n[Error]!!!\n\n" 1>&2
-            exit
+            exit 1
         fi
         if [ ! -f "${exist_config_file_name}.txt" ]; then
             echo "
@@ -194,6 +194,8 @@ function countFile() {
         printf "\nTotal number of file(s) matched which is $(countSourceFile)\n"
     fi
     echo ""
+    printf "===================================================================================================\n"
+    printf "===================================================================================================\n\n"
 }
 
 # Count number of file in source directory
