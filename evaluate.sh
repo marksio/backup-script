@@ -201,8 +201,8 @@ function invalid() {
 }
 
 function testBackupEvaluateLogfile() {
-    while read da s de deTime; do
-        logfileDateTime=$da sourceFortestBackupEvaluateLogfile=$s destFortestBackupEvaluateLogfile=$de destTimestamp=$deTime
+    while read co da s de deTime; do
+        counter=$co logfileDateTime=$da sourceFortestBackupEvaluateLogfile=$s destFortestBackupEvaluateLogfile=$de destTimestamp=$deTime
     done < $backupEvaluateLogFilename
     countFileFortestBackupEvaluateLogfile
 }
@@ -219,6 +219,7 @@ function countFileFortestBackupEvaluateLogfile() {
     if [ $(countSourceFileFortestBackupEvaluateLogfile) = $(countDestFileFortestBackupEvaluateLogfile) ]; then
         printf "\nTotal number of file(s) matched which is $(countSourceFileFortestBackupEvaluateLogfile) with the source and destination\n"
     fi
+    printf "In total you have perform $counter of backup\n"
     echo ""
 }
 
