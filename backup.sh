@@ -23,6 +23,8 @@ function welcome() {
     "
 }
 
+# Prompt user on the availability of the configuration file
+# Then redirect to respective function
 function configFileSetting() {
     while :
     do
@@ -56,6 +58,7 @@ function configFileSetting() {
     
 }
 
+# When user have a configuration file
 function yConfig() {
     cd $dirBackupConfigFile    
     echo "List of file(s) on the current directory is/are" 
@@ -84,6 +87,7 @@ function yConfig() {
     cd ..
 }
 
+# When user do not have a configuration file
 function nConfig() {
     if [ -d "$dirBackupConfigFile" ]; then
         echo "
@@ -108,7 +112,7 @@ function nConfig() {
             exit 1
         fi
     done  
-    promptUserBackupSourceDest
+    promptUserBackupSourceDest # Call this function to prompt user on the source and destination 
     mkdir $dirBackupConfigFile
     echo "Created '${dirBackupConfigFile}' folder on the same directory of this script"
     echo "$source $dest" >> "$dirBackupConfigFile/$config_file_name.txt"
@@ -121,6 +125,7 @@ function nConfig() {
     fi
 }
 
+# Prompt user on the source and destination 
 function promptUserBackupSourceDest() {
     while :
     do
@@ -151,6 +156,7 @@ function promptUserBackupSourceDest() {
     done
 }
 
+# Execution of the backing up process (Copy from source to destionation)
 function backupFile() {
     destTimestamp=$(basename $source)"_"$(datetime)
     cp -r $source"/." $dest/$destTimestamp
@@ -175,6 +181,7 @@ function backupFile() {
     fi
 }
 
+# Being called by backupFile function to insert all this summary of file to logfile
 function countFile() {
     printf "Total number of file(s) in Source directory '${source}'\n"
     countSourceFile
@@ -223,10 +230,6 @@ function countDir() {
     cd $dest 
     ls -A | wc -l
     cd ../
-}
-
-function searchFile() {
-    find . -name $dest*
 }
 
 # Prompt user on session or program continuity

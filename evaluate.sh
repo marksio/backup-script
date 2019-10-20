@@ -148,6 +148,7 @@ function predefineCase() {
         fi
     done
 }
+
 # '1' - Predefine setting without error, no config file existed on the destination (Creation of backup file)
 function nPredefineNoError() {
     yn="n"
@@ -200,6 +201,7 @@ function invalid() {
 	exit 1
 }
 
+# Called by menu function to test on the logfile produced by backup script
 function testBackupEvaluateLogfile() {
     while read co da s de deTime; do
         counter=$co logfileDateTime=$da sourceFortestBackupEvaluateLogfile=$s destFortestBackupEvaluateLogfile=$de destTimestamp=$deTime
@@ -278,7 +280,7 @@ function printLog() {
     fi
 }
 
-# Viewlog file
+# View logfile
 function viewLog() {
     while :
     do
