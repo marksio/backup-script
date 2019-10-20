@@ -140,10 +140,16 @@ function promptUserBackupSourceDest() {
     done
     echo "Your current working directory is" 
     pwd
-    read -p "Enter the FULL location path of the file you wish to saved to (Destination): " dest
-    if [ ! -d "$dest" ]; then
-        mkdir $dest            
-    fi
+    while :
+    do
+        read -p "Enter the FULL location path of the file you wish to saved to (Destination): " dest
+        if [ ! -d "$dest" ]; then
+            mkdir $dest 
+            break
+        else
+            printf "\nExisting directory name. Please try different directory name.\n\n"        
+        fi
+    done
 }
 
 function backupFile() {
