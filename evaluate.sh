@@ -313,7 +313,7 @@ function countFile() {
     countDestFile
     printf "\nTotal number of file(s) in each Destination folder under the directory of '${dest}'\n"
     countDestFileOnDir
-    printf "You have perform $(countDir) evaluation and there is total of $(countDir) folder(s) in the directory of ''${dest}''\n"
+    printf "You have perform $(countDir) evaluation and there is total of $(countDir) folder(s) in the directory of '${dest}'\n"
     if [ $(countSourceFile) = $(countDestFile) ]; then
         printf "\nTotal number of file(s) matched which is $(countSourceFile) with the source and destination\n"
     fi
