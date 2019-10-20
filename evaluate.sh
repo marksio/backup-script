@@ -4,6 +4,7 @@
 DIR="testing_backup"
 backupFilename="backup.sh"
 evaluationLogFilename="logfile_evaluate.txt"
+backupEvaluateLogFilename="logfile_backup_evaluate.txt"
 config_file_name="testing"
 exist_config_file_name="testing"
 source="../Documents"
@@ -52,9 +53,10 @@ function menu() {
         echo "
         '1' - Pre-configured Test
         '2' - Manual Test
-        '3' - Summary of number of File(s) // Folder(s)
-        '4' - View logfile of this test
-        '5' - Delete Old // Previous '${DIR}' Folder
+        '3' - Test based on logfile of '${backupEvaluateLogFilename}' (Must the backup script at least once)
+        '4' - Summary of number of File(s) // Folder(s)
+        '5' - View logfile of this test
+        '6' - Delete Old // Previous '${DIR}' Folder
         "
         read -p "What scenario number you would like to test (From above):" menu
         case $menu in
@@ -73,16 +75,20 @@ function menu() {
             break
             ;;
         "4" )
-            viewLog
+            testBackupEvaluateLogfile
             break
             ;;
         "5" )
+            viewLog
+            break
+            ;;
+        "6" )
             rm -rf testing_backup
             echo "
             Folder '${DIR}' Deleted
             "
             thanks
-            exit
+            break
             ;;
         *)
             printf "Wrong input. Please enter the correct value.\n"
@@ -192,6 +198,17 @@ function invalid() {
     yn="asfad"
     echo -e "$yn" | bash ./$backupFilename 1>&2
 	exit 1
+}
+
+function testBackupEvaluateLogfile() {
+    while read da s de deTime; do
+        logfileDateTime=$da source=$s dest=$de destTimestamp=$deTime
+    done < $backupEvaluateLogFilename
+    # while :
+    # do
+
+    # done
+    countFile
 }
 
 # Creation of logfile

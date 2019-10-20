@@ -2,6 +2,7 @@
 
 # Declare variable
 logfileName="logfile_backup.txt"
+logfileNameForEvaluate="logfile_backup_evaluate.txt"
 dirBackupConfigFile="backup_config_file"
 
 function datetime() {
@@ -151,6 +152,7 @@ function backupFile() {
         printf "Backup total of '$(countSourceFile)' file(s) from '${source}' to '${dest}' Successfully.\n"
         printf "$(datetime) - Backup total of '$(countSourceFile)' file(s) from '${source}' to '${dest}' Successfully.\n" >> $logfileName
         printf "~~~ Summary of Number of File(s) or Folder(s) Backed Up ~~~\n$(countFile)\n\n" >> $logfileName
+        printf "$(datetime) ${source} ${dest} ${destTimestamp}" >> $logfileNameForEvaluate
     else
         echo "There is [ERROR] backing up files from '${source}' to '${dest}'. Check you destination path.
         "
