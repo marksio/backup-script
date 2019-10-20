@@ -71,11 +71,11 @@ function menu() {
             break
             ;;
         "3" )
-            countFile
+            testBackupEvaluateLogfile
             break
             ;;
         "4" )
-            testBackupEvaluateLogfile
+            countFile
             break
             ;;
         "5" )
@@ -202,13 +202,53 @@ function invalid() {
 
 function testBackupEvaluateLogfile() {
     while read da s de deTime; do
-        logfileDateTime=$da source=$s dest=$de destTimestamp=$deTime
+        logfileDateTime=$da sourceFortestBackupEvaluateLogfile=$s destFortestBackupEvaluateLogfile=$de destTimestamp=$deTime
     done < $backupEvaluateLogFilename
-    # while :
-    # do
+    countFileFortestBackupEvaluateLogfile
+}
 
-    # done
-    countFile
+# Count number of file(s) // folder(s) in summary
+function countFileFortestBackupEvaluateLogfile() {
+    printf "Total number of file(s) in Source directory '${sourceFortestBackupEvaluateLogfile}'\n"
+    countSourceFileFortestBackupEvaluateLogfile
+    printf "\nTotal number of file(s) in most recent backup Destination in '${destTimestamp}' under the directory of '${destFortestBackupEvaluateLogfile} folder'\n"
+    countDestFileFortestBackupEvaluateLogfile
+    printf "\nTotal number of file(s) in each Destination folder under the directory of '${destFortestBackupEvaluateLogfile}'\n"
+    countDestFileOnDirFortestBackupEvaluateLogfile
+    printf "You have perform $(countDirFortestBackupEvaluateLogfile) of backup and there is total of $(countDirFortestBackupEvaluateLogfile) folder(s) in the directory of '${destFortestBackupEvaluateLogfile}'\n"
+    if [ $(countSourceFileFortestBackupEvaluateLogfile) = $(countDestFileFortestBackupEvaluateLogfile) ]; then
+        printf "\nTotal number of file(s) matched which is $(countSourceFileFortestBackupEvaluateLogfile) with the source and destination\n"
+    fi
+    echo ""
+}
+
+# Count number of file in source directory
+function countSourceFileFortestBackupEvaluateLogfile() {
+    find $sourceFortestBackupEvaluateLogfile -type f | wc -l
+}
+
+# Count number of file in destination
+function countDestFileFortestBackupEvaluateLogfile() {
+    cd $destFortestBackupEvaluateLogfile
+    find $destTimestamp -type f | wc -l
+    cd ../
+}
+
+# Count number of file inside each folder of testing_backup
+function countDestFileOnDirFortestBackupEvaluateLogfile() {
+    for entry in "$destFortestBackupEvaluateLogfile"/*
+    do
+        echo $(basename $entry)
+        find $entry -type f | wc -l
+        echo ""
+    done
+}
+
+# Count number of folder in the testing_backup folder
+function countDirFortestBackupEvaluateLogfile() {
+    cd $destFortestBackupEvaluateLogfile
+    ls -A | wc -l
+    cd ../
 }
 
 # Creation of logfile
@@ -269,13 +309,13 @@ function viewLog() {
 function countFile() {
     printf "Total number of file(s) in Source directory '${source}'\n"
     countSourceFile
-    printf "\nTotal number of file(s) in Destination in '$(getLatestDestFolder)' under the directory of '${dest}'\n"
+    printf "\nTotal number of file(s) in most recent backup Destination in '$(getLatestDestFolder)' under the directory of '${dest}'\n"
     countDestFile
     printf "\nTotal number of file(s) in each Destination folder under the directory of '${dest}'\n"
     countDestFileOnDir
     printf "You have perform $(countDir) evaluation and there is total of $(countDir) folder(s) in the directory of ''${dest}''\n"
     if [ $(countSourceFile) = $(countDestFile) ]; then
-        printf "\nTotal number of file(s) matched which is $(countSourceFile)\n"
+        printf "\nTotal number of file(s) matched which is $(countSourceFile) with the source and destination\n"
     fi
     echo ""
 }

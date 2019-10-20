@@ -152,7 +152,7 @@ function backupFile() {
         printf "Backup total of '$(countSourceFile)' file(s) from '${source}' to '${dest}' Successfully.\n"
         printf "$(datetime) - Backup total of '$(countSourceFile)' file(s) from '${source}' to '${dest}' Successfully.\n" >> $logfileName
         printf "~~~ Summary of Number of File(s) or Folder(s) Backed Up ~~~\n$(countFile)\n\n" >> $logfileName
-        printf "$(datetime) ${source} ${dest} ${destTimestamp}" >> $logfileNameForEvaluate
+        printf "$(datetime) ${source} ${dest} ${destTimestamp}\n" >> $logfileNameForEvaluate
     else
         echo "There is [ERROR] backing up files from '${source}' to '${dest}'. Check you destination path.
         "
@@ -184,7 +184,7 @@ function countDestFile() {
     vargetLatestDestFolder=$(getLatestDestFolder)
     cd $dest/$vargetLatestDestFolder
     find $getLatestDestFolder -type f | wc -l
-    cd ../../../
+    cd ../../
 }
 
 # Count number of file inside each folder of testing_backup
@@ -207,7 +207,7 @@ function getLatestDestFolder() {
 function countDir() {
     cd $dest 
     ls -A | wc -l
-    cd ../../
+    cd ../
 }
 
 function searchFile() {
@@ -228,7 +228,7 @@ function sessionBackup() {
             main
             ;;
         "N" | "n" )
-            echo "~~~ Thank You using me ~~~"
+            printf "\n~~~ Thank You using me ~~~\n\n"
             exit
             ;;
         *)
