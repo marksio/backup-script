@@ -56,7 +56,7 @@ function menu() {
         '3' - Test based on logfile of '${backupEvaluateLogFilename}' (Must the backup script at least once)
         '4' - Summary of number of File(s) // Folder(s)
         '5' - View logfile of this test
-        '6' - Delete Old // Previous '${DIR}' Folder
+        '6' - Delete Old // Previous '${DIR}' Folder & config file '$config_file.txt' produced by this script
         "
         read -p "What scenario number you would like to test (From above):" menu
         case $menu in
@@ -83,7 +83,11 @@ function menu() {
             break
             ;;
         "6" )
-            rm -rf testing_backup
+            rm -rf $DIR
+            rm -rf asdfad
+            if [ -f "$config_file_name.txt" ]; then
+                rm backup_config_file/$config_file_name.txt
+            fi
             echo "
             Folder '${DIR}' Deleted
             "
@@ -164,6 +168,7 @@ function nPredefineNoError() {
 }
 
 # '2' - MUST RUN #1 first ~ Predefine setting without error, existed config file on the destination (2 Times)
+# It will create 2 folder with same file(s) inside 2 different folder
 function yPredefineNoError() {
     yn="y"
     session="n"
@@ -178,15 +183,19 @@ function yPredefineNoError() {
     echo ""
 }
 
-
 # '3' - Error issue, wrong input when prompt user on session continuity
+# Depending on any file(s) or folder(s) existent
+# If file(s) or folder(s) existed, then it will create a folder name called "asdfad" outside the "testing_backup folder"
+# If file(s) or folder(s) not exist, then it will backed up successfully but it prompt error
 function nPredefineError() {
     yn="n"
-    session="asdfadreqr"
+    session="asdfad"
     echo -e "$yn\n$config_file_name\n$source\n$dest\n$session" | bash ./$backupFilename
 }
 
 # '4' - Error issue, file existed but still create backup on the same destination
+# Unable to create a backup
+# Error pop up
 function yPredefineError() {
     yn="y"
     exist_config_file_name="testing_backup/testing_folder"
@@ -195,10 +204,10 @@ function yPredefineError() {
 }
 
 # '5' - Error issue, invalid input when prompt yes or no on do you have a default config file 
+# It directly pop error because of invalid input
 function invalid() {
     yn="asfad"
-    echo -e "$yn" | bash ./$backupFilename 1>&2
-	exit 1
+    echo -e "$yn" | bash ./$backupFilename 
 }
 
 # Called by menu function to test on the logfile produced by backup script
@@ -369,7 +378,11 @@ function end() {
     do
         read -p "Do you want to delete this '${DIR}' directory ('y' for Yes // 'n' for No) : " delDir
         if [ $delDir = "y" ]; then
-            rm -rf testing_backup
+            rm -rf $DIR
+            rm -rf asdfad
+            if [ -f "$config_file_name.txt" ]; then
+                rm backup_config_file/$config_file_name.txt
+            fi
             echo "
             Folder '${DIR}' Deleted
             "

@@ -32,28 +32,25 @@ function configFileSetting() {
         if [ "$?" != "0" ]; then
             printf "\n[Error]!!!\n\n" 1>&2
             exit 1
+        else
+            if [ $yn = "y" ]; then
+                if [ ! -d "$dirBackupConfigFile" ]; then
+                    echo "
+                    '${dirBackupConfigFile}' directory is not exist.
+                    "
+                    configFileSetting
+                    break
+                else 
+                    yConfig
+                    break
+                fi 
+            elif [ $yn = "n" ];  then
+                nConfig
+                break
+            else
+                echo "You have entered wrong character !!"
+            fi  
         fi
-        case $yn in
-        "y")
-            if [ ! -d "$dirBackupConfigFile" ]; then
-                echo "
-                '${dirBackupConfigFile}' directory is not exist.
-                "
-                configFileSetting
-                break
-            else 
-                yConfig
-                break
-            fi        
-            ;;
-        "n" )
-            nConfig
-            break
-            ;;
-        *)
-            echo "You have entered wrong character !!"
-            ;;
-        esac
     done
     
 }
@@ -69,15 +66,16 @@ function yConfig() {
         if [ "$?" != "0" ]; then
             printf "\n[Error]!!!\n\n" 1>&2
             exit 1
-        fi
-        if [ ! -f "${exist_config_file_name}.txt" ]; then
-            echo "
-            '${exist_config_file_name}.txt' file not found.
-            "
-            echo "List of file(s) on the current directory is/are" 
-            ls
-        else 
-            break
+        else
+            if [ ! -f "${exist_config_file_name}.txt" ]; then
+                echo "
+                '${exist_config_file_name}.txt' file not found.
+                "
+                echo "List of file(s) on the current directory is/are" 
+                ls
+            else 
+                break
+            fi
         fi
     done
     echo "'$exist_config_file_name.txt' file found."
@@ -100,16 +98,17 @@ function nConfig() {
     while :
     do
         read -p "Enter file name for default config (No file extention needed, It will Automatically define as .txt): " config_file_name
-        if [ -e "$config_file_name" ]; then
-            echo "
-            '${config_file_name}' file existed
-            "
-        else 
-            break
-        fi
         if [ "$?" != "0" ]; then
             printf "\n[Error]!!!\n\n" 1>&2
             exit 1
+        else
+            if [ -e "$config_file_name" ]; then
+                echo "
+                '${config_file_name}' file existed
+                "
+            else 
+                break
+            fi
         fi
     done  
     promptUserBackupSourceDest # Call this function to prompt user on the source and destination 
@@ -132,14 +131,15 @@ function promptUserBackupSourceDest() {
         echo "Your current working directory is" 
         pwd
         read -p "Enter the FULL location path of the file you wish to backup (From / Source): " source
-        if [ ! -d "$source" ]; then
-            echo "Directory does not exist!" 
-        else 
-            break
-        fi
         if [ "$?" != "0" ]; then
             printf "\n[Error]!!!\n\n" 1>&2
             exit 1
+        else
+            if [ ! -d "$source" ]; then
+                echo "Directory does not exist!" 
+            else 
+                break
+            fi
         fi
     done
     echo "Your current working directory is" 
@@ -147,11 +147,16 @@ function promptUserBackupSourceDest() {
     while :
     do
         read -p "Enter the FULL location path of the file you wish to saved to (Destination): " dest
-        if [ ! -d "$dest" ]; then
-            mkdir $dest 
-            break
+        if [ "$?" != "0" ]; then
+            printf "\n[Error]!!!\n\n" 1>&2
+            exit 1
         else
-            printf "\nExisting directory name. Please try different directory name.\n\n"        
+            if [ ! -d "$dest" ]; then
+                mkdir $dest 
+                break
+            else
+                printf "\nExisting directory name. Please try different directory name.\n\n"        
+            fi
         fi
     done
 }
@@ -242,19 +247,16 @@ function sessionBackup() {
         if [ "$?" != "0" ]; then
             printf "\n[Error]!!!\n\n" 1>&2
             exit 1
+        else
+            if [ $session = "y" ]; then
+                main
+            elif [ $session = "n" ]; then
+                printf "\n~~~ Thank You using me ~~~\n\n"
+                exit
+            else
+                echo "Please enter the valid value !!"
+            fi
         fi
-        case $session in
-        "Y" | "y")
-            main
-            ;;
-        "N" | "n" )
-            printf "\n~~~ Thank You using me ~~~\n\n"
-            exit
-            ;;
-        *)
-            echo "Please enter the valid value !!"
-            ;;
-        esac
     done
 }
 
