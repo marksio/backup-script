@@ -192,6 +192,7 @@ function nPredefineNoError() {
 
 # '2' - MUST RUN #1 first ~ Predefine setting without error, existed config file on the destination (2 Times)
 # It will create 2 folders with the same file(s) inside 2 different folder
+# It depends on the source and destination store on the configuration file which is ‘testing.txt’
 function yPredefineNoError() {
     yn="y"
     session="n"
@@ -219,6 +220,7 @@ function nPredefineError() {
 # '4' - Error issue, file existed but still create backup on the same destination
 # Unable to create a backup
 # Error pop up
+# It depends on the source and destination store on the configuration file which is ‘testing.txt’
 function yPredefineError() {
     yn="y"
     exist_config_file_name="testing_backup/testing_folder"
