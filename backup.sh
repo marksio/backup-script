@@ -229,9 +229,15 @@ function getLatestDestFolder() {
 
 # Count number of folder in the testing_backup folder
 function countDir() {
-    cd $dest 
-    ls -A | wc -l
-    cd ../
+    if [ $dest="testing_backup/testing_noErrorPredefine" ]; then
+        cd $dest 
+        ls -A | wc -l
+        cd ../../
+    else
+        cd $dest 
+        ls -A | wc -l
+        cd ../
+    fi    
 }
 
 # Prompt user on session or program continuity

@@ -94,9 +94,12 @@ function menu() {
             "6" )
                 rm -rf $DIR
                 rm -rf asdfad
+                rm -rf n
+                cd backup_config_file
                 if [ -f "$config_file_name.txt" ]; then
-                    rm backup_config_file/$config_file_name.txt
+                    rm $config_file_name.txt
                 fi
+                cd ../
                 echo "
                 Folder '${DIR}' Deleted
                 "
@@ -406,9 +409,12 @@ function end() {
             if [ $delDir = "y" ]; then
                 rm -rf $DIR
                 rm -rf asdfad
+                rm -rf n
+                cd backup_config_file
                 if [ -f "$config_file_name.txt" ]; then
-                    rm backup_config_file/$config_file_name.txt
+                    rm $config_file_name.txt
                 fi
+                cd ../
                 echo "
                 Folder '${DIR}' Deleted
                 "
