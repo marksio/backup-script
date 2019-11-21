@@ -268,9 +268,7 @@ function countSourceFileFortestBackupEvaluateLogfile() {
 
 # Count number of file in destination
 function countDestFileFortestBackupEvaluateLogfile() {
-    cd $destFortestBackupEvaluateLogfile
-    find $destTimestamp -type f | wc -l
-    cd ../
+    find $destFortestBackupEvaluateLogfile/$destTimestamp -type f | wc -l
 }
 
 # Count number of file inside each folder of testing_backup
@@ -285,9 +283,7 @@ function countDestFileOnDirFortestBackupEvaluateLogfile() {
 
 # Count number of folder in the testing_backup folder
 function countDirFortestBackupEvaluateLogfile() {
-    cd $destFortestBackupEvaluateLogfile
-    ls -A | wc -l
-    cd ../
+    ls -1 $destFortestBackupEvaluateLogfile | wc -l  
 }
 
 # Creation of logfile
