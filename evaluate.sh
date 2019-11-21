@@ -283,7 +283,7 @@ function countDestFileOnDirFortestBackupEvaluateLogfile() {
 
 # Count number of folder in the testing_backup folder
 function countDirFortestBackupEvaluateLogfile() {
-    ls -1 $destFortestBackupEvaluateLogfile | wc -l  
+    ls -A $destFortestBackupEvaluateLogfile | wc -l  
 }
 
 # Creation of logfile
