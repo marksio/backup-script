@@ -367,9 +367,7 @@ function countSourceFile() {
 # Count number of file in destination
 function countDestFile() {
     vargetLatestDestFolder=$(getLatestDestFolder)
-    cd $dest/$vargetLatestDestFolder
-    find $getLatestDestFolder -type f | wc -l
-    cd ../../../
+    find $dest/$vargetLatestDestFolder/$getLatestDestFolder -type f | wc -l
 }
 
 # Count number of file inside each folder of testing_backup
@@ -390,9 +388,7 @@ function getLatestDestFolder() {
 
 # Count number of folder in the testing_backup folder
 function countDir() {
-    cd $dest 
-    ls -A | wc -l
-    cd ../../
+    ls $dest -A | wc -l
 }
 
 # Prompting user on deletion of folder 'testing_backup'
